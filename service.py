@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 # used python-lambda (https://github.com/nficano/python-lambda) to set up environment
-from urllib import urlopen
+from urllib.request import urlopen
 from nbconvert import HTMLExporter
 import nbformat
 
