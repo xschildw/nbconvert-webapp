@@ -27,3 +27,13 @@ To update the function:
 ```
 (Xa, please paste command here)
 ```
+
+## How to test locally
+Install the python-lambda helper project:
+```
+pip install python-lambda
+```
+Now call the lambda handler (service.py using event.json as input) by executing the command:
+```
+lambda invoke -v
+```
