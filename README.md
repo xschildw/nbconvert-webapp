@@ -11,7 +11,7 @@ Install all dependencies within this environment
 pip install requests
 pip install nbconvert
 ```
-Now zip them up.  I named it `app.zip`
+Now zip up your site-packages directory.  I named the archive `app.zip`
 
 Then add the handler file, service.py, to the app.zip
 ```
@@ -19,6 +19,11 @@ zip -g app.zip service.py
 ```
 
 ## [How to deploy the AWS Lambda Function deployment package](http://docs.aws.amazon.com/lambda/latest/dg/vpc-rds-upload-deployment-pkg.html)
+To create the function:
+```
+(Xa, please paste command here)
+```
+To update the function:
 ```
 (Xa, please paste command here)
 ```
