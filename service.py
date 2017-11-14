@@ -12,8 +12,8 @@ def handler(event, context):
     meta = site.info()
     contentLength = int(meta.get_all('Content-Length')[0])
     # print ("Content-Length:", contentLength)
-    if contentLength > 15728640:
-        raise ValueError('Notebook file is too large. It must be less than 15MB: ' + event.get('file'))
+    if contentLength > 26214400:
+        raise ValueError('Notebook file is too large. It must be less than 25MB: ' + event.get('file'))
     response = site.read().decode()
     
     notebook = nbformat.reads(response, as_version=4)
