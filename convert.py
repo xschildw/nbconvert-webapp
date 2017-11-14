@@ -7,7 +7,7 @@ import nbformat
 app = Flask(__name__)
  
 # Converts ipynb file referenced by url parameter 'file' to html
-# Like to convert to pdf.  Tried using command line call (via subprocess), but it depends on TeX being installed (which is a heavy ask for the lambda environment).
+# Ideally we would convert to pdf.  Tried using command line call (via subprocess), but it depends on TeX being installed (which is a heavy ask for the lambda environment).
 # https://nbconvert.readthedocs.io/en/latest/install.html#installing-tex
 @app.route("/html")
 def convertToHtml():
