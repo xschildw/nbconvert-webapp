@@ -8,7 +8,7 @@ import nbformat
 # Ideally we would convert to pdf.  Tried using command line call (via subprocess), but it depends on TeX being installed (which is a heavy ask for the lambda environment).
 # https://nbconvert.readthedocs.io/en/latest/install.html#installing-tex
 def handler(event, context):
-    site = urlopen(event.get('file'))
+    site = urlopen(event['queryStringParameters']['file'])
     meta = site.info()
     contentLength = int(meta.get_all('Content-Length')[0])
     # print ("Content-Length:", contentLength)
