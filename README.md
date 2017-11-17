@@ -22,11 +22,13 @@ zip -g app.zip service.py
 ## [How to deploy the AWS Lambda Function deployment package](http://docs.aws.amazon.com/lambda/latest/dg/vpc-rds-upload-deployment-pkg.html)
 To create the function:
 ```
-(Xa, please paste command here)
+## <bucket_name> is the name of the bucket where the package resides
+## <lambda_role_arn> is the arn of the role to be assumed by the lambda function
+aws lambda create-function --region <region> --function-name nbconvert --code S3Bucket=<bucket_name>,S3Key=app.zip --role <lambda_role_arn> --handler service.handler --runtime python3.6 --timeout 10 --memory-size 1024
 ```
 To update the function:
 ```
-(Xa, please paste command here)
+aws lambda update-function-code --function-name nbconvert --s3-bucket <bucket_name> --s3-key=app.zip --publish
 ```
 
 ## How to test locally
