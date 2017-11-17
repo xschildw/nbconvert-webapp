@@ -10,12 +10,13 @@ import urllib
 # https://nbconvert.readthedocs.io/en/latest/install.html#installing-tex
 def handler(event, context):
     try:
-        site = urlopen(event['queryStringParameters']['file'])
+        siteUrl = event['queryStringParameters']['file']
+        site = urlopen(siteUrl)
         meta = site.info()
         contentLength = int(meta.get_all('Content-Length')[0])
         # print ("Content-Length:", contentLength)
         if contentLength > 26214400:
-            raise ValueError('Notebook file is too large. It must be less than 25MB: ' + event.get('file'))
+            raise ValueError('Notebook file is too large. It must be less than 25MB: ' + siteUrl)
         response = site.read().decode()
         notebook = nbformat.reads(response, as_version=4)
         html_exporter = HTMLExporter()
@@ -24,17 +25,19 @@ def handler(event, context):
         return {
             "statusCode": 200,
             "headers": { 
-                "Content-Type": "text/html",
-                "Access-Control-Allow-Origin": "*",
-                "Access-Control-Expose-Headers": "Access-Control-Allow-Origin",
-                "Access-Control-Allow-Headers": "Origin, X-Requested-With, Content-Type, Accept"
-            },
+                "Content-Type": "text/html"
+                },
             "body": body
         }
     except urllib.error.HTTPError as e:
         return {
             "statusCode": e.getcode(),
             "body": e.read()
+        }
+    except ValueError as e:
+        return {
+            "statusCode": 400,
+            "body": str(e)
         }
     except Exception as e:
         return {
