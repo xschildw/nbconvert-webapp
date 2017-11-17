@@ -3,6 +3,7 @@
 from urllib.request import urlopen
 from nbconvert import HTMLExporter
 import nbformat
+import urllib
 
 # Converts ipynb file referenced by the 'file' param (in the post request) and returns html.
 # Ideally we would convert to pdf.  Tried using command line call (via subprocess), but it depends on TeX being installed (which is a heavy ask for the lambda environment).
@@ -22,8 +23,18 @@ def handler(event, context):
         (body, resources) = html_exporter.from_notebook_node(notebook)
         return {
             "statusCode": 200,
-            "headers": { "Content-Type": "text/html"},
+            "headers": { 
+                "Content-Type": "text/html",
+                "Access-Control-Allow-Origin": "*",
+                "Access-Control-Expose-Headers": "Access-Control-Allow-Origin",
+                "Access-Control-Allow-Headers": "Origin, X-Requested-With, Content-Type, Accept"
+            },
             "body": body
+        }
+    except urllib.error.HTTPError as e:
+        return {
+            "statusCode": e.getcode(),
+            "body": e.read()
         }
     except Exception as e:
         return {
