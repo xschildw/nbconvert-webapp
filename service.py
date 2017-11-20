@@ -25,7 +25,8 @@ def handler(event, context):
         return {
             "statusCode": 200,
             "headers": { 
-                "Content-Type": "text/html"
+                "Content-Type": "text/html",
+                "Access-Control-Allow-Origin": "*"
                 },
             "body": body
         }
