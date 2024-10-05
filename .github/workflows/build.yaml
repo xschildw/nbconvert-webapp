@@ -1,50 +1,32 @@
 name: build
 
-# Trigger the workflow on pushes to any branch
 on:
-  push:
-    branches:
-      - '**'
+  workflow_call:
+    inputs:
+      context:
+        type: string
+        required: true
+      role_to_assume:
+        type: string
+        required: true
 
 jobs:
   build-push:
     runs-on: ubuntu-latest
 
-#    environment:
-#      name: ${{ github.ref == 'refs/heads/master' && 'prod' || 'dev' }}
-
     steps:
-      - uses: actions/checkout@v4
 
-      - name: setup python
-        uses: actions/setup-python@v4
-        with:
-          python-version: '3.11'
-
-      - name: setup-node
-        uses: actions/setup-node@v4
-        with:
-          node-version: '16'
-
-      - name: setup-buildx
-        uses: docker/setup-buildx-action@v3
-
-#      - name: Configure AWS credentials
+#      - name: config-creds
 #        uses: aws-actions/configure-aws-credentials@v2
+#        with:
+#          aws-region: us-east-1
+#          role-to-assume: ${{ inputs.role_to_assume }}
+#          role-session-name: GitHubActions-${{ github.repository_owner }}-${{ github.event.repository.name }}-${{ github.run_id }}
+#          role-duration-seconds: 1200
 
-      - name: setup-cdk
-        run: npm install -g aws-cdk
-
-      - name: setup-venv
-        run: |
-          python -m venv ./.venv
-          source ./.venv/bin/activate
-          pip install --upgrade pip
-          pip install -r ./requirements.txt
-          
       - name: cdk-synth
-        run: |
-          source ./.venv/bin/activate
-          cdk synth
-
-
+        uses: youyo/aws-cdk-github-actions@v2
+        with:
+          cdk_subcommand: synth
+          cdk_args: '--require-approval never --context env=${{ inputs.CONTEXT }} --progress events --debug'
+          actions_comment: false
